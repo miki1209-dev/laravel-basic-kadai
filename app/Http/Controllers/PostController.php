@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\SUpport\Facades\DB;
 use App\Models\Post;
+use App\Http\Requests\PostStoreRequest;
 
 class PostController extends Controller
 {
@@ -19,5 +20,25 @@ class PostController extends Controller
 		$post = Post::find($id);
 
 		return view('posts.show', compact('post'));
+	}
+
+	public function create()
+	{
+		return view('posts.create');
+	}
+
+	public function store(PostStoreRequest $request)
+	{
+		$post = new Post();
+		$post->title = $request->input('title');
+		$post->content = $request->input('content');
+		$post->save();
+
+		//デバック用
+		// dump($post->id);
+		// dump($post->title);
+		// dump($post->content);
+
+		return redirect('/posts');
 	}
 }
